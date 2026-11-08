@@ -30,7 +30,7 @@ namespace TestProject3
         [InlineData("вав",0)]
         [InlineData("вав", -1)]
         [InlineData("вав", -100)]
-        public void Book_WithInvalidPagesOrTIitle_Throws(string bookTitle, int bookPages)
+        public void Book_WithInvalidPagesOrTitle_Throws(string bookTitle, int bookPages)
         {
             Assert.Throws<ArgumentException>(() => new Book(bookTitle, "я", bookPages));
         }
