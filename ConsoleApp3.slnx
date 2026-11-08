@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ConsoleApp3/ConsoleApp3.csproj" />
+  <Project Path="TestProject3/TestProject3.csproj" Id="e9d3d227-591b-47fe-bd43-8506c5eb5305" />
+</Solution>
