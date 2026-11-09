@@ -24,5 +24,5 @@ dotnet run --project ConsoleApp3
 - тест на корректную загрузку библиотеки и ее сохранение с бэкапом
 - тест на загрузку испорченного файла и создание его копии
 
-## Как запустить
-dotnet test --project TestProject3
+## Как запустить тесты
+dotnet test TestProject3
