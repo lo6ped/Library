@@ -1,18 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+public enum BookGenre
+{
+    Unknown,
+    Fantastic,
+    Fighting,
+    Adventure,  
+    Romance,
+}
 class BookData
 {
     public string? Title {  get; set; }
     public string? Author { get; set; }
     public int Pages { get; set; }
+    public BookGenre Genre { get; set;  }
 }
 public class Book
 {
     public string Title { get; init; }
     public string Author { get; init; }
     public int Pages { get; init; }
-    public Book(string title, string author, int pages)
+    public BookGenre Genre { get; init; }
+    public Book(string title, string author, int pages, BookGenre genre = BookGenre.Unknown)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -29,6 +39,7 @@ public class Book
         Title = title;
         Author = author;
         Pages = pages;
+        Genre = genre;
     }
     public void PrintInfo()
     {

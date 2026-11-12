@@ -124,7 +124,7 @@ public class BookStorage : IBookStorage
                 {
                     try
                     {
-                        result.Add(new Book(item.Title ?? "", item.Author ?? "", item.Pages));
+                        result.Add(new Book(item.Title ?? "", item.Author ?? "", item.Pages, item.Genre));
                     }
                     catch (ArgumentException)
                     {
