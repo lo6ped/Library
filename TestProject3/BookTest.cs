@@ -1,5 +1,6 @@
 ﻿
 using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TestProject3
 {
@@ -128,6 +129,51 @@ namespace TestProject3
                     File.Delete(file);
                 }
             }
+        }
+        [Fact]
+        public void LoadFileWithGenreSaveLoadWithSameGenreCorrectly()
+        {
+            string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".json");
+            string backup = path + ".bak";
+            try
+            {
+                var storage = new BookStorage(path);
+
+                Assert.True(storage.Save(new List<Book> { new Book("а", "Тамагочи", 123, BookGenre.Romance), new Book("вф", "Аксаков", 123, BookGenre.Fantastic) }));
+                var loaded = storage.Load();
+
+                Assert.Equal(2, loaded.Count);
+                Assert.Equal("а", loaded[0].Title);
+                Assert.Equal("Тамагочи", loaded[0].Author);
+                Assert.Equal(BookGenre.Romance, loaded[0].Genre);
+                Assert.Equal(123, loaded[0].Pages);
+                Assert.Equal("вф", loaded[1].Title);
+                Assert.Equal(BookGenre.Fantastic, loaded[1].Genre);
+                Assert.True(storage.Save(loaded));
+            }
+            finally
+            {
+                File.Delete(path);
+                File.Delete(backup);
+            }
+        }
+        [Fact]
+        public void BookWithoutGenreReturnsUnknownGenre()
+        {
+            string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".json");
+            try
+            {
+                File.WriteAllText(path,
+                        "[{\"Title\":\"а\",\"Author\":\"Тамагочи\",\"Pages\":123}," +
+                        "{\"Title\":\"вф\",\"Author\":\"Аксаков\",\"Pages\":123}]");
+                var storage = new BookStorage(path);
+
+                var loaded = storage.Load();
+
+                Assert.Equal(BookGenre.Unknown, loaded[0].Genre);
+                Assert.Equal(BookGenre.Unknown, loaded[1].Genre);
+            }
+            finally { File.Delete(path); }
         }
     }
 }
