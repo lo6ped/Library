@@ -41,13 +41,25 @@ public class Book
         Pages = pages;
         Genre = genre;
     }
+    public string GenreTranslate(BookGenre genre)
+    {
+        switch (genre)
+        {
+            case BookGenre.Unknown: return "без жанра";
+            case BookGenre.Fantastic: return "фантастика";
+            case BookGenre.Fighting: return "боевик";
+            case BookGenre.Adventure: return "приключения";
+            case BookGenre.Romance: return "романтика";
+            default: return "неизветсно";
+        }
+    }
     public void PrintInfo()
     {
         Console.WriteLine(ToString());
     }
     public override string ToString()
     {
-        return $"«{Title}» — {Author}, {Pages} стр.";
+        return $"«{Title}» — {Author}, {Pages} стр., {GenreTranslate(Genre)}";
     }
 }
 

@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 public interface IBookStorage
 {
     bool Save(List<Book> books);
@@ -49,6 +50,7 @@ public class BookStorage : IBookStorage
             WriteIndented = true,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
+        _options.Converters.Add(new JsonStringEnumConverter());
     }
     private string BackupPath => _filePath + ".bak";
     private void CopyBrokenFile()
@@ -117,7 +119,7 @@ public class BookStorage : IBookStorage
             try
             {
                 string json = File.ReadAllText(path);
-                List<BookData>? raw = JsonSerializer.Deserialize<List<BookData>>(json);
+                List<BookData>? raw = JsonSerializer.Deserialize<List<BookData>>(json, _options);
                 List<Book> result = new List<Book>();
                 int skipped = 0;
                 foreach (BookData item in raw ?? new List<BookData>())

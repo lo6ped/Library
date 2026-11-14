@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -244,7 +245,14 @@ bool AddBook(Library library)                  // 4
     {
         Console.WriteLine("Введите корректное значение");
     }
-    var book = new Book(title, author, pages);
+    Console.WriteLine("Выберите жанр произведения: ");
+    foreach (BookGenre genre in Enum.GetValues<BookGenre>())
+    {
+        Console.WriteLine($"{(int)genre} - {genre}");
+    }
+    int choice = ReadIntInRange("Введите число: ",0,Enum.GetValues<BookGenre>().Length-1);
+    BookGenre bookGenre = (BookGenre)choice;
+    var book = new Book(title, author, pages, bookGenre);
     if(!library.Add(book))
     {
         Console.WriteLine("Не удалось добавить книгу");
