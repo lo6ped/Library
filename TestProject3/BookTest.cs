@@ -175,5 +175,38 @@ namespace TestProject3
             }
             finally { File.Delete(path); }
         }
+        [Fact]
+        public void EnumGenreReadedAsText()
+        {
+            string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".json");
+            try
+            {
+                var storage = new BookStorage(path);
+                Assert.True(storage.Save(new List<Book> { new Book("а", "Тамагочи", 123, BookGenre.Romance) }));
+                
+                var readed = File.ReadAllText(path);
+
+                Assert.Contains("Romance", readed);
+            }
+            finally { File.Delete(path); }
+        }
+        [Fact]
+        public void EnumGenreReadedAsNumber()
+        {
+            string path = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".json");
+            try
+            {
+                File.WriteAllText(path,
+                        "[{\"Title\":\"а\",\"Author\":\"Тамагочи\",\"Pages\":123, \"Genre\":1}," +
+                        "{\"Title\":\"вф\",\"Author\":\"Аксаков\",\"Pages\":123, \"Genre\":3}]");
+                var storage = new BookStorage(path);
+
+                var loaded = storage.Load();
+
+                Assert.Equal(BookGenre.Fantastic, loaded[0].Genre);
+                Assert.Equal(BookGenre.Adventure, loaded[1].Genre);
+            }
+            finally { File.Delete(path); }
+        }
     }
 }
