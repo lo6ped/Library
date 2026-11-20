@@ -1,5 +1,6 @@
 ﻿
 using System.Diagnostics;
+using System.Drawing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TestProject3
@@ -207,6 +208,52 @@ namespace TestProject3
                 Assert.Equal(BookGenre.Adventure, loaded[1].Genre);
             }
             finally { File.Delete(path); }
+        }
+        [Theory]
+        [InlineData(BookGenre.Unknown, "без жанра")]
+        [InlineData(BookGenre.Fantastic, "фантастика")]
+        [InlineData(BookGenre.Fighting, "боевик")]
+        [InlineData(BookGenre.Adventure, "приключения")]
+        [InlineData(BookGenre.Romance, "романтика")]
+        public void EveryGenreTranslateToRussian(BookGenre bookGenre, string expectedTranslate)
+        {
+            Assert.Equal(expectedTranslate, Book.GenreTranslate(bookGenre));
+        }
+        [Fact]
+        public void EveryGenreHaveRussianTranslate()
+        {
+            foreach(BookGenre genre in Enum.GetValues<BookGenre>())
+            {
+                string translated = Book.GenreTranslate(genre);
+                Assert.True(translated != "неизвестно", $"нет перевода для {genre}");
+            }
+        }
+        [Fact]
+        public void FindByGenreReturnsCorrectGenre()
+        {
+            var books = new List<Book>();
+            books.Add(new Book("а", "Тамагочи", 123, BookGenre.Romance));
+            books.Add(new Book("аasf", "Тамагfhgочи", 1233, BookGenre.Romance));
+            books.Add(new Book("аaf", "Тамагhgочи", 13, BookGenre.Adventure));
+            var library = new Library(books);
+
+            var findGenre = library.FindByGenre(BookGenre.Romance);
+
+            Assert.Equal(BookGenre.Romance, findGenre[0].Genre);
+            Assert.Equal(BookGenre.Romance, findGenre[1].Genre);
+        }
+        [Fact]
+        public void BookGenreNotFoundedReturnsNewList()
+        {
+            var books = new List<Book>();
+            books.Add(new Book("а", "Тамагочи", 123, BookGenre.Romance));
+            books.Add(new Book("аasf", "Тамагfhgочи", 1233, BookGenre.Romance));
+            books.Add(new Book("аaf", "Тамагhgочи", 13, BookGenre.Adventure));
+            var library = new Library(books);
+
+            var findGenre = library.FindByGenre(BookGenre.Fighting);
+
+            Assert.True(findGenre.Count == 0);
         }
     }
 }
