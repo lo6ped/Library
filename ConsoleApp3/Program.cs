@@ -248,7 +248,7 @@ bool AddBook(Library library)                  // 4
     Console.WriteLine("Выберите жанр произведения: ");
     foreach (BookGenre genre in Enum.GetValues<BookGenre>())
     {
-        Console.WriteLine($"{(int)genre} - {genre}");
+        Console.WriteLine($"{(int)genre} - {Book.GenreTranslate(genre)}");
     }
     int choice = ReadIntInRange("Введите число: ",0,Enum.GetValues<BookGenre>().Length-1);
     BookGenre bookGenre = (BookGenre)choice;

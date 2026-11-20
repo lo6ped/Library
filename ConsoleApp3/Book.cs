@@ -41,7 +41,7 @@ public class Book
         Pages = pages;
         Genre = genre;
     }
-    public string GenreTranslate(BookGenre genre)
+    public static string GenreTranslate(BookGenre genre)    // что такое static?
     {
         switch (genre)
         {
@@ -50,7 +50,7 @@ public class Book
             case BookGenre.Fighting: return "боевик";
             case BookGenre.Adventure: return "приключения";
             case BookGenre.Romance: return "романтика";
-            default: return "неизветсно";
+            default: return "неизвестно";
         }
     }
     public void PrintInfo()

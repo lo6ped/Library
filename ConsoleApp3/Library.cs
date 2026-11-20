@@ -31,4 +31,17 @@ public class Library
     {
         return new List<Book>(_books);
     }
+    public List<Book> FindByGenre(BookGenre genre)
+    {      
+        foreach(BookGenre bookGenre in Enum.GetValues<BookGenre>())
+        {
+            if (bookGenre == genre)
+            {
+                var result = _books.Where(book => book.Genre == genre).ToList();
+                return result.Count > 0 ? result : new List<Book>();
+            }
+        }
+        Console.WriteLine($"{genre} не найден");
+        return new List<Book>();
+    }
 }
