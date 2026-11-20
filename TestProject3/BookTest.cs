@@ -239,11 +239,10 @@ namespace TestProject3
 
             var findGenre = library.FindByGenre(BookGenre.Romance);
 
-            Assert.Equal(BookGenre.Romance, findGenre[0].Genre);
-            Assert.Equal(BookGenre.Romance, findGenre[1].Genre);
+            Assert.All(findGenre, book => Assert.Equal(BookGenre.Romance, book.Genre));
         }
         [Fact]
-        public void BookGenreNotFoundedReturnsNewList()
+        public void BookGenreNotFoundedReturnsEmptyList()
         {
             var books = new List<Book>();
             books.Add(new Book("а", "Тамагочи", 123, BookGenre.Romance));
@@ -253,7 +252,7 @@ namespace TestProject3
 
             var findGenre = library.FindByGenre(BookGenre.Fighting);
 
-            Assert.True(findGenre.Count == 0);
+            Assert.Empty(findGenre);
         }
     }
 }
